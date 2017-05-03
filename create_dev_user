@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+SUBDOMAIN="desa"
+PASSWORD="desa123"
+ADMIN_PASSWORD="pass1234"
+EMAIL="desa@stp.gov.py"
+
+echo "--- Creating databases"
+rake cartodb:db:setup
+
+echo "--- Create '${SUBDOMAIN}' user"
+rake cartodb:db:create_user --trace SUBDOMAIN="${SUBDOMAIN}" \
+	PASSWORD="${PASSWORD}" ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
+	EMAIL="${EMAIL}"
+
+# # Cuota por defecto en 10GB
+echo "--- Updating quota to 10GB"
+rake cartodb:db:set_user_quota["${SUBDOMAIN}",10240]
+
+# # Se permite la creación ilimitada de tablas
+echo "--- Allowing unlimited tables creation"
+rake cartodb:db:set_unlimited_table_quota["${SUBDOMAIN}"]
+
+# # Se permite la creación de tablas privadas adicionalmente a las publicas
+echo "--- Allowing private tables creation"
+rake cartodb:db:set_user_private_tables_enabled["${SUBDOMAIN}",'true']
+
+# # Se establece el tipo de cuenta
+echo "--- Setting cartodb account type"
+rake cartodb:db:set_user_account_type["${SUBDOMAIN}",'[DEDICATED]']
