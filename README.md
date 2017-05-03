@@ -49,7 +49,3 @@ O en windows en el archivo `C:\Windows\System32\drivers\etc\hosts`:
 ```
 127.0.1.1 geostp.localhost
 ```
-=======
-# docker-geostp
-Versión containerizada del Portal de Información Georeferenciada para Análisis de Políticas Públicas de la Secretaría Técnica de Planificación
->>>>>>> 4912ee79c1265e14646244f5602026193e9d3f50
